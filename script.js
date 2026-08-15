@@ -99,23 +99,14 @@ form.addEventListener('submit', async e => {
   submitBtn.textContent = 'Sending…';
   submitBtn.disabled = true;
 
-  // Replace YOUR_FORM_ID with your Formspree form ID (free at formspree.io)
-  const ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
-
   try {
-    if (ENDPOINT.includes('YOUR_FORM_ID')) {
-      // Dev mode — simulate success
-      await new Promise(r => setTimeout(r, 900));
-      showSuccess();
-    } else {
-      const res = await fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      if (res.ok) showSuccess();
-      else throw new Error();
-    }
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ access_key: 'ec234792-f840-49f6-b89c-94c58fdac214', ...data }),
+    });
+    if (res.ok) showSuccess();
+    else throw new Error();
   } catch {
     submitBtn.textContent = 'Send us a note';
     submitBtn.disabled = false;
